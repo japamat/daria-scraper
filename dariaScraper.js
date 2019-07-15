@@ -1,10 +1,3 @@
-/**
- * variable names
- * helper functions to break out complex logic
- * function names
- * 
- */
-
 const rp = require('request-promise');
 const $ = require('cheerio');
 const base = 'https://sites.google.com';
@@ -29,16 +22,12 @@ async function scrapeLinesFromDaria() {
     let epUrls = [];
     let len = $('.topLevel > div > a', resp).length;
 
-    // for (let i = 0; i < len; i += 1) {
-    //   epUrls.push($('.topLevel > div > a', resp)[i].attribs.href);
-    // }
     for (let i = 0; i < len; i += 1) {
       epUrls.push($('.topLevel > div > a', resp)[i].attribs.href);
     }
 
-    // await getEps(epUrls);
     await getEps(epUrls);
-    // helper function for readablitty
+
     for (let character in theObj) {
       let cleanedArr = cleanArr(theObj[character]);
       let markovChain = makeChains(cleanedArr);
@@ -95,8 +84,7 @@ async function getLines(url) {
 
   for (let i = 0; i < tarLen; i += 1) {
     // get the data from the first child, where the line is kept
-    let kids = $('font', resp)[i].children; // this is an array
-    // console.log(kids[0]);
+    let kids = $('font', resp)[i].children;
     
     let kidsLen = kids.length;
     
@@ -104,7 +92,6 @@ async function getLines(url) {
       let textSplit = kids[0].data.split(' - ');
       // get character name key
       let key = textSplit[0];
-      // if(characters.includes(key)) console.log(kids);
       if (characters.includes(key)) {
         __storeData(key, textSplit[1]);
       }
