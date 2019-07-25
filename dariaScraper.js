@@ -8,7 +8,7 @@ const { makeChains } = require('./makeChains');
 const characters = ['Daria', 'Jane', 'Quinn', 'Trent', 'Mr. DeMartino', 'Tom'];
 
 // global object to store all the words from all the characters
-let theObj = {};
+let chainObjTemp = {};
 scrapeLinesFromDaria();
 
 /**
@@ -28,8 +28,8 @@ async function scrapeLinesFromDaria() {
 
     await getEps(epUrls);
 
-    for (let character in theObj) {
-      let cleanedArr = cleanArr(theObj[character]);
+    for (let character in chainObjTemp) {
+      let cleanedArr = cleanArr(chainObjTemp[character]);
       let markovChain = makeChains(cleanedArr);
       let data = JSON.stringify(markovChain, null, 2);
       fs.writeFileSync(`${character}.json`, data, function(err) {
@@ -73,10 +73,10 @@ async function getLines(url) {
   let resp = await rp(url);
   
   function __storeData(key, string) {
-    if (!theObj[key]) {
-      theObj[key] = string.split(' ');
+    if (!chainObjTemp[key]) {
+      chainObjTemp[key] = string.split(' ');
     } else {
-      theObj[key] = theObj[key].concat(string.split(' '));
+      chainObjTemp[key] = chainObjTemp[key].concat(string.split(' '));
     }
   }
 
